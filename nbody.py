@@ -131,10 +131,11 @@ def generate_spiral_galaxy(num: int, radius: float = 1.0) -> List[Particle]:
 
 
 class BarnesHutSimulation:
-    def __init__(self, num_particles: int = 100, dt: float = 0.01, theta: float = 0.5):
+    def __init__(self, num_particles: int = 100, dt: float = 0.01, theta: float = 0.5, recorder=None):
         self.dt = dt
         self.theta = theta
         self.particles = generate_spiral_galaxy(num_particles)
+        self.recorder = recorder
 
     def _build_tree(self) -> OctreeNode:
         root = OctreeNode((0.0, 0.0, 0.0), 2.0)
@@ -154,3 +155,10 @@ class BarnesHutSimulation:
             p.x += p.vx * self.dt
             p.y += p.vy * self.dt
             p.z += p.vz * self.dt
+
+        if self.recorder is not None:
+            self.recorder.add_frame(self.particles)
+
+    def run(self, iterations: int):
+        for _ in range(iterations):
+            self.step()
