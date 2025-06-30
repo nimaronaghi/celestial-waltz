@@ -16,6 +16,8 @@ class Particle:
 
 
 class OctreeNode:
+    MIN_SIZE = 1e-5
+
     def __init__(self, center: Tuple[float, float, float], half_size: float):
         self.center = list(center)
         self.half_size = half_size
@@ -58,6 +60,13 @@ class OctreeNode:
                 self.particle = p
                 self.mass = p.mass
                 self.com = [p.x, p.y, p.z]
+                return
+            elif self.half_size < self.MIN_SIZE:
+                # Avoid infinite subdivision when particles overlap closely
+                self.mass += p.mass
+                self.com[0] += p.mass * p.x
+                self.com[1] += p.mass * p.y
+                self.com[2] += p.mass * p.z
                 return
             else:
                 self._subdivide()
