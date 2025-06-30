@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 import time
+import math
 
 from nbody import BarnesHutSimulation
 
@@ -26,6 +27,10 @@ class GalaxyApp:
         tk.Scale(controls, from_=1, to=100, orient=tk.HORIZONTAL, variable=self.dt_var).pack(side=tk.LEFT)
         tk.Label(controls, text="Iterations").pack(side=tk.LEFT)
         tk.Scale(controls, from_=50, to=1000, orient=tk.HORIZONTAL, variable=self.iter_var).pack(side=tk.LEFT)
+
+        self.color_var = tk.BooleanVar(value=False)
+        tk.Checkbutton(controls, text="Color by velocity", variable=self.color_var).pack(side=tk.LEFT)
+
         ttk.Button(controls, text="Start", command=self.start).pack(side=tk.LEFT)
 
         self.sim = None
@@ -54,9 +59,24 @@ class GalaxyApp:
         self.canvas.delete("all")
         if not self.sim:
             return
+        colorize = self.color_var.get()
+        max_speed = 0.0
+        if colorize:
+            for p in self.sim.particles:
+                speed = math.sqrt(p.vx * p.vx + p.vy * p.vy + p.vz * p.vz)
+                if speed > max_speed:
+                    max_speed = speed
+
         for p in self.sim.particles:
             px, py = self.project(p.x, p.y, p.z)
-            self.canvas.create_oval(px-2, py-2, px+2, py+2, fill="white", outline="")
+            color = "white"
+            if colorize and max_speed > 0:
+                speed = math.sqrt(p.vx * p.vx + p.vy * p.vy + p.vz * p.vz)
+                t = min(1.0, speed / max_speed)
+                r = int(t * 255)
+                b = int((1.0 - t) * 255)
+                color = f"#{r:02x}00{b:02x}"
+            self.canvas.create_oval(px-2, py-2, px+2, py+2, fill=color, outline="")
 
     def update_simulation(self):
         if self.sim and self.current_iter < self.total_iter:
