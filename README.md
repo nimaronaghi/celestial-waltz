@@ -39,7 +39,8 @@ The main parameters controlling the simulation are listed below:
 ## Jupyter Notebook
 
 An example notebook `example.ipynb` is included which demonstrates how to start
-the GUI from a notebook cell.
+the GUI from a notebook cell. It also shows how to record a short simulation
+sequence to disk using `SimulationRecorder`.
 
 ## GPU Simulation
 
