@@ -1,5 +1,7 @@
 import struct
+import os
 from recorder import SimulationRecorder
+from PIL import Image
 
 
 def lzw_encode(data, min_code_size=8):
@@ -50,6 +52,8 @@ def save_gif(frames, width, height, path, delay=10):
 
 
 def main():
+    if not os.path.exists("simulation.bin"):
+        raise FileNotFoundError("simulation.bin not found")
     rec = SimulationRecorder.load("simulation.bin")
     size = 200
     frames = []
@@ -62,6 +66,8 @@ def main():
                 pixels[iy * size + ix] = 1
         frames.append(pixels)
     save_gif(frames, size, size, "simulation.gif")
+    img = Image.open("simulation.gif")
+    img.save("simulation.png")
 
 
 if __name__ == "__main__":

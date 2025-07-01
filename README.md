@@ -10,6 +10,12 @@ with different parameters.
 The code only uses the Python standard library and therefore does not require
 any third-party packages.
 
+Optional features like PNG/GIF conversion use Pillow which can be installed via:
+
+```bash
+pip install pillow
+```
+
 ## Running the GUI
 
 To start the simulation run:
@@ -20,6 +26,12 @@ python3 galaxy_gui.py
 
 A window will appear with sliders controlling the number of particles, the time
 step, and how many iterations to run. Press **Start** to launch the simulation.
+
+Command line simulations can also be run headless using `nbody.py`:
+
+```bash
+python3 -c "from nbody import BarnesHutSimulation; sim=BarnesHutSimulation(); sim.run(100)"
+```
 
 ## Simulation Parameters
 
@@ -35,6 +47,17 @@ The main parameters controlling the simulation are listed below:
   conditions.
 - **Visualization Options** – trails, velocity vectors, and coloring by
   velocity.
+
+Additional options include:
+
+- **mode** – choose `bh` (Barnes-Hut) or `direct` pairwise forces.
+- **integrator** – `euler` or `leapfrog` for more stable integration.
+- **eps** – softening parameter controlling force calculation.
+
+### Diagnostics
+
+The command line runner prints total momentum and energy before and after the
+simulation to help verify numerical stability.
 
 ## Jupyter Notebook
 
@@ -54,6 +77,8 @@ python3 convert_to_gif.py
 This will create `simulation.gif` in the project directory. The GIF is not
 included in the repository to keep the codebase lightweight, so run the above
 command locally to generate it.
+`convert_to_gif.py` will also save a PNG of the final frame for higher quality
+inspection.
 
 
 ## GPU Simulation
