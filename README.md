@@ -42,6 +42,20 @@ An example notebook `example.ipynb` is included which demonstrates how to start
 the GUI from a notebook cell. It also shows how to record a short simulation
 sequence to disk using `SimulationRecorder`.
 
+## Simulation GIF
+
+The example notebook saves a recording to `simulation.bin`. You can convert this
+binary file into a GIF using:
+
+```bash
+python3 convert_to_gif.py
+```
+
+This will create `simulation.gif` in the project directory. The GIF is not
+included in the repository to keep the codebase lightweight, so run the above
+command locally to generate it.
+
+
 ## GPU Simulation
 
 For experimentation on Google Colab or any machine with a CUDA capable GPU,
