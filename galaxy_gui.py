@@ -20,6 +20,7 @@ class GalaxyApp:
         self.n_var = tk.IntVar(value=200)
         self.dt_var = tk.DoubleVar(value=0.01)
         self.iter_var = tk.IntVar(value=200)
+        self.eps_var = tk.DoubleVar(value=0.05)
 
         tk.Label(controls, text="Particles").pack(side=tk.LEFT)
         tk.Scale(controls, from_=50, to=500, orient=tk.HORIZONTAL, variable=self.n_var).pack(side=tk.LEFT)
@@ -27,6 +28,8 @@ class GalaxyApp:
         tk.Scale(controls, from_=1, to=100, orient=tk.HORIZONTAL, variable=self.dt_var).pack(side=tk.LEFT)
         tk.Label(controls, text="Iterations").pack(side=tk.LEFT)
         tk.Scale(controls, from_=50, to=1000, orient=tk.HORIZONTAL, variable=self.iter_var).pack(side=tk.LEFT)
+        tk.Label(controls, text="Softening").pack(side=tk.LEFT)
+        tk.Scale(controls, from_=1, to=100, orient=tk.HORIZONTAL, variable=self.eps_var).pack(side=tk.LEFT)
 
         # Enable velocity-based coloring by default for better visual feedback
         self.color_var = tk.BooleanVar(value=True)
@@ -41,7 +44,8 @@ class GalaxyApp:
         n = self.n_var.get()
         dt = self.dt_var.get() / 100.0
         iterations = self.iter_var.get()
-        self.sim = BarnesHutSimulation(num_particles=n, dt=dt)
+        eps = self.eps_var.get() / 100.0
+        self.sim = BarnesHutSimulation(num_particles=n, dt=dt, eps=eps)
         self.current_iter = 0
         self.total_iter = iterations
         self.update_simulation()

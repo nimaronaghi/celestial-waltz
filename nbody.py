@@ -1,7 +1,9 @@
 import math
 import random
 from dataclasses import dataclass
-from typing import List, Optional, Tuple
+from typing import Iterable, List, Optional, Tuple
+import time
+from concurrent.futures import ThreadPoolExecutor
 
 
 @dataclass
@@ -130,10 +132,35 @@ def generate_spiral_galaxy(num: int, radius: float = 1.0) -> List[Particle]:
     return particles
 
 
+def compute_total_momentum(particles: Iterable[Particle]):
+    px = sum(p.mass * p.vx for p in particles)
+    py = sum(p.mass * p.vy for p in particles)
+    pz = sum(p.mass * p.vz for p in particles)
+    return px, py, pz
+
+
+def compute_total_energy(particles: Iterable[Particle], G: float = 1.0, eps: float = 0.05):
+    KE = sum(0.5 * p.mass * (p.vx ** 2 + p.vy ** 2 + p.vz ** 2) for p in particles)
+    PE = 0.0
+    plist = list(particles)
+    for i in range(len(plist)):
+        for j in range(i + 1, len(plist)):
+            dx = plist[i].x - plist[j].x
+            dy = plist[i].y - plist[j].y
+            dz = plist[i].z - plist[j].z
+            r = math.sqrt(dx * dx + dy * dy + dz * dz + eps * eps)
+            PE -= G * plist[i].mass * plist[j].mass / r
+    return KE + PE
+
+
 class BarnesHutSimulation:
-    def __init__(self, num_particles: int = 100, dt: float = 0.01, theta: float = 0.5, recorder=None):
+    def __init__(self, num_particles: int = 100, dt: float = 0.01, theta: float = 0.5,
+                 eps: float = 0.05, mode: str = "bh", integrator: str = "euler", recorder=None):
         self.dt = dt
         self.theta = theta
+        self.eps = eps
+        self.mode = mode
+        self.integrator = integrator
         self.particles = generate_spiral_galaxy(num_particles)
         self.recorder = recorder
 
@@ -144,21 +171,84 @@ class BarnesHutSimulation:
         root.finalize()
         return root
 
+    def _direct_forces(self) -> List[Tuple[float, float, float]]:
+        n = len(self.particles)
+        forces = [(0.0, 0.0, 0.0)] * n
+        G = 1.0
+        for i in range(n):
+            fx, fy, fz = 0.0, 0.0, 0.0
+            for j in range(i + 1, n):
+                pi = self.particles[i]
+                pj = self.particles[j]
+                dx = pj.x - pi.x
+                dy = pj.y - pi.y
+                dz = pj.z - pi.z
+                r = math.sqrt(dx * dx + dy * dy + dz * dz + self.eps * self.eps)
+                f = G / (r ** 3)
+                fx_ij = dx * f
+                fy_ij = dy * f
+                fz_ij = dz * f
+                fx += fx_ij * pj.mass
+                fy += fy_ij * pj.mass
+                fz += fz_ij * pj.mass
+                forces[j] = (
+                    forces[j][0] - fx_ij * pi.mass,
+                    forces[j][1] - fy_ij * pi.mass,
+                    forces[j][2] - fz_ij * pi.mass,
+                )
+            forces[i] = (fx, fy, fz)
+        return forces
+
     def step(self):
-        tree = self._build_tree()
-        for p in self.particles:
-            ax, ay, az = tree.compute_force_on(p, self.theta)
-            p.vx += ax * self.dt
-            p.vy += ay * self.dt
-            p.vz += az * self.dt
-        for p in self.particles:
-            p.x += p.vx * self.dt
-            p.y += p.vy * self.dt
-            p.z += p.vz * self.dt
+        if self.mode == "direct":
+            forces = self._direct_forces()
+        else:
+            tree = self._build_tree()
+            with ThreadPoolExecutor() as ex:
+                forces = list(ex.map(lambda p: tree.compute_force_on(p, self.theta, eps=self.eps), self.particles))
+
+        if self.integrator == "leapfrog":
+            for (p, (ax, ay, az)) in zip(self.particles, forces):
+                p.vx += ax * self.dt * 0.5
+                p.vy += ay * self.dt * 0.5
+                p.vz += az * self.dt * 0.5
+                p.x += p.vx * self.dt
+                p.y += p.vy * self.dt
+                p.z += p.vz * self.dt
+            if self.mode == "direct":
+                forces = self._direct_forces()
+            else:
+                tree = self._build_tree()
+                with ThreadPoolExecutor() as ex:
+                    forces = list(ex.map(lambda p: tree.compute_force_on(p, self.theta, eps=self.eps), self.particles))
+            for (p, (ax, ay, az)) in zip(self.particles, forces):
+                p.vx += ax * self.dt * 0.5
+                p.vy += ay * self.dt * 0.5
+                p.vz += az * self.dt * 0.5
+        else:  # euler
+            for (p, (ax, ay, az)) in zip(self.particles, forces):
+                p.vx += ax * self.dt
+                p.vy += ay * self.dt
+                p.vz += az * self.dt
+                p.x += p.vx * self.dt
+                p.y += p.vy * self.dt
+                p.z += p.vz * self.dt
 
         if self.recorder is not None:
             self.recorder.add_frame(self.particles)
 
     def run(self, iterations: int):
+        start_mom = compute_total_momentum(self.particles)
+        start_energy = compute_total_energy(self.particles, eps=self.eps)
+        t0 = time.time()
         for _ in range(iterations):
             self.step()
+        elapsed = time.time() - t0
+        end_mom = compute_total_momentum(self.particles)
+        end_energy = compute_total_energy(self.particles, eps=self.eps)
+        print("Momentum:", start_mom, "->", end_mom)
+        if sum(abs(m) for m in start_mom) > 0:
+            delta = [abs(e - s) / abs(s) for s, e in zip(start_mom, end_mom)]
+            print("Relative change:", delta)
+        print("Energy drift:", end_energy - start_energy)
+        print("Simulation time: %.2f s" % elapsed)
