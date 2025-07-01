@@ -28,7 +28,8 @@ class GalaxyApp:
         tk.Label(controls, text="Iterations").pack(side=tk.LEFT)
         tk.Scale(controls, from_=50, to=1000, orient=tk.HORIZONTAL, variable=self.iter_var).pack(side=tk.LEFT)
 
-        self.color_var = tk.BooleanVar(value=False)
+        # Enable velocity-based coloring by default for better visual feedback
+        self.color_var = tk.BooleanVar(value=True)
         tk.Checkbutton(controls, text="Color by velocity", variable=self.color_var).pack(side=tk.LEFT)
 
         ttk.Button(controls, text="Start", command=self.start).pack(side=tk.LEFT)
@@ -53,6 +54,10 @@ class GalaxyApp:
         cy = self.canvas_size / 2
         px = cx + x * factor
         py = cy - y * factor
+        # Clamp coordinates so that the 2x2 particle remains fully visible
+        # within the canvas boundaries
+        px = max(2, min(self.canvas_size - 2, px))
+        py = max(2, min(self.canvas_size - 2, py))
         return px, py
 
     def draw(self):
