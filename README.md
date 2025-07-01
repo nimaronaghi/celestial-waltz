@@ -143,3 +143,13 @@ notebook and run:
 ```
 
 The command line flags allow choosing the number of particles and iterations.
+
+## TODO
+
+- Add command-line options to select different galaxy initializers.
+- Implement additional integrators such as Runge-Kutta for higher accuracy.
+- Improve GPU kernels for better performance on large particle counts.
+- Benchmark against well-known N-body implementations (e.g. REBOUND, Gadget).
+- Expand automated tests for stability and momentum conservation.
+- Explore interactive 3D visualization using modern graphics libraries.
+
