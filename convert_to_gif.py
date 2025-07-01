@@ -1,10 +1,8 @@
 import os
 import numpy as np
-
-import struct
-import os
-from recorder import SimulationRecorder
 from PIL import Image
+
+from recorder import SimulationRecorder
 
 
 def save_gif(frames, path, delay=10):
@@ -36,11 +34,6 @@ def main():
         frames.append(img)
     save_gif(frames, "simulation.gif")
     Image.fromarray(frames[-1]).save("simulation.png")
-                pixels[iy * size + ix] = 1
-        frames.append(pixels)
-    save_gif(frames, size, size, "simulation.gif")
-    img = Image.open("simulation.gif")
-    img.save("simulation.png")
 
 
 if __name__ == "__main__":
