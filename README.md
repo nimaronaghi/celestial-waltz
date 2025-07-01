@@ -10,6 +10,34 @@ with different parameters.
 The code only uses the Python standard library and therefore does not require
 any third-party packages.
 
+Optional features like PNG/GIF conversion use Pillow which can be installed via:
+
+```bash
+pip install pillow
+```
+
+## How to Run the Simulation
+
+1. Ensure Python 3.8 or newer is installed. Optionally install Pillow for GIF/PNG output and PyTorch for GPU acceleration:
+   ```bash
+   pip install pillow torch
+   ```
+2. Launch the Tkinter GUI with:
+   ```bash
+   python3 galaxy_gui.py
+   ```
+3. For headless execution use the library directly:
+   ```bash
+   python3 -c "from nbody import BarnesHutSimulation; \
+   sim = BarnesHutSimulation(num_particles=500, eps=0.02, mode='bh', integrator='leapfrog'); \
+   sim.run(200)"
+   ```
+   Adjust parameters as needed (`mode` is `bh` or `direct`; `integrator` is `euler` or `leapfrog`).
+4. GPU acceleration can be tried with:
+   ```bash
+   python3 gpu_sim.py --particles 10000 --iterations 100 --mode bh
+   ```
+
 ## Running the GUI
 
 To start the simulation run:
@@ -20,6 +48,12 @@ python3 galaxy_gui.py
 
 A window will appear with sliders controlling the number of particles, the time
 step, and how many iterations to run. Press **Start** to launch the simulation.
+
+Command line simulations can also be run headless using `nbody.py`:
+
+```bash
+python3 -c "from nbody import BarnesHutSimulation; sim=BarnesHutSimulation(); sim.run(100)"
+```
 
 ## Simulation Parameters
 
@@ -35,6 +69,17 @@ The main parameters controlling the simulation are listed below:
   conditions.
 - **Visualization Options** – trails, velocity vectors, and coloring by
   velocity.
+
+Additional options include:
+
+- **mode** – choose `bh` (Barnes-Hut) or `direct` pairwise forces.
+- **integrator** – `euler` or `leapfrog` for more stable integration.
+- **eps** – softening parameter controlling force calculation.
+
+### Diagnostics
+
+The command line runner prints total momentum and energy before and after the
+simulation to help verify numerical stability.
 
 ## Jupyter Notebook
 
@@ -54,6 +99,8 @@ python3 convert_to_gif.py
 This will create `simulation.gif` in the project directory. The GIF is not
 included in the repository to keep the codebase lightweight, so run the above
 command locally to generate it.
+`convert_to_gif.py` will also save a PNG of the final frame for higher quality
+inspection.
 
 
 ## GPU Simulation
