@@ -1,6 +1,7 @@
 import argparse
 import torch
 
+
 def generate_spiral_galaxy(num, radius=1.0, device="cuda"):
     central_mass = num
     G = 1.0
@@ -17,6 +18,7 @@ def generate_spiral_galaxy(num, radius=1.0, device="cuda"):
     vel = torch.stack((vx, vy, vz), dim=1)
     mass = torch.ones(num, device=device)
     return pos, vel, mass
+
 
 def step_direct(pos, vel, mass, dt, G=1.0, eps=0.05):
     diff = pos.unsqueeze(1) - pos.unsqueeze(0)

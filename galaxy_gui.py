@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import ttk
-import time
 import math
 
 from nbody import BarnesHutSimulation
