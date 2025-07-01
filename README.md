@@ -17,6 +17,7 @@ $$
 
 where $G$ is the gravitational constant and a small softening term $\epsilon$
 is added in the implementation to avoid singularities. The Barnes--Hut tree
+
 approximates distant regions by their center of mass. A node of size $s$ at
 distance $d$ from the particle is treated as a single body when
 $\frac{s}{d} < \theta$.
@@ -29,6 +30,7 @@ $$
 \mathbf{v}^{n+1/2} &= \mathbf{v}^n + \tfrac{1}{2}\,\mathbf{a}^n\,\Delta t,\\
 \mathbf{x}^{n+1} &= \mathbf{x}^n + \mathbf{v}^{n+1/2}\,\Delta t,\\
 \mathbf{v}^{n+1} &= \mathbf{v}^{n+1/2} + \tfrac{1}{2}\,\mathbf{a}^{n+1}\,\Delta t,
+
 \end{aligned}
 $$
 
