@@ -20,6 +20,10 @@ class GalaxyApp:
         self.dt_var = tk.DoubleVar(value=0.01)
         self.iter_var = tk.IntVar(value=200)
         self.eps_var = tk.DoubleVar(value=0.05)
+        # new options for integrator, initial conditions and solver mode
+        self.integrator_var = tk.StringVar(value="leapfrog")
+        self.initial_var = tk.StringVar(value="spiral")
+        self.mode_var = tk.StringVar(value="bh")
 
         tk.Label(controls, text="Particles").pack(side=tk.LEFT)
         tk.Scale(controls, from_=50, to=500, orient=tk.HORIZONTAL, variable=self.n_var).pack(side=tk.LEFT)
@@ -29,6 +33,19 @@ class GalaxyApp:
         tk.Scale(controls, from_=50, to=1000, orient=tk.HORIZONTAL, variable=self.iter_var).pack(side=tk.LEFT)
         tk.Label(controls, text="Softening").pack(side=tk.LEFT)
         tk.Scale(controls, from_=1, to=100, orient=tk.HORIZONTAL, variable=self.eps_var).pack(side=tk.LEFT)
+
+        # dropdown for integrator selection
+        tk.Label(controls, text="Integrator").pack(side=tk.LEFT)
+        integrator_menu = ttk.OptionMenu(controls, self.integrator_var, self.integrator_var.get(), "euler", "leapfrog", "rk4")
+        integrator_menu.pack(side=tk.LEFT)
+        # dropdown for initial condition selection
+        tk.Label(controls, text="Initial").pack(side=tk.LEFT)
+        initial_menu = ttk.OptionMenu(controls, self.initial_var, self.initial_var.get(), "spiral", "plummer", "kuzmin", "two_galaxies")
+        initial_menu.pack(side=tk.LEFT)
+        # dropdown for solver mode
+        tk.Label(controls, text="Solver").pack(side=tk.LEFT)
+        mode_menu = ttk.OptionMenu(controls, self.mode_var, self.mode_var.get(), "bh", "direct")
+        mode_menu.pack(side=tk.LEFT)
 
         # Enable velocity-based coloring by default for better visual feedback
         self.color_var = tk.BooleanVar(value=True)
@@ -44,7 +61,15 @@ class GalaxyApp:
         dt = self.dt_var.get() / 100.0
         iterations = self.iter_var.get()
         eps = self.eps_var.get() / 100.0
-        self.sim = BarnesHutSimulation(num_particles=n, dt=dt, eps=eps)
+        # create simulation with selected options
+        self.sim = BarnesHutSimulation(
+            num_particles=n,
+            dt=dt,
+            eps=eps,
+            integrator=self.integrator_var.get(),
+            initial=self.initial_var.get(),
+            mode=self.mode_var.get(),
+        )
         self.current_iter = 0
         self.total_iter = iterations
         self.update_simulation()
