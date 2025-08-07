@@ -168,6 +168,7 @@ to regenerate the gallery images.  The script evolves each initial condition
 for a few hundred steps (except the Plummer sphere, which is shown at t=0) and
 saves the scatter plots in the `images/` directory.
 
+<<<<<<< HEAD
 ### Animations
 
 An additional script, `generate_collision_gif.py`, demonstrates how to create
@@ -192,6 +193,8 @@ Once you have moved the GIF into `images/`, you can view it below:
 |---------------|
 | ![Galaxy collision animation](images/galaxy_collision_big.gif) |
 
+=======
+>>>>>>> 1601b4c41addef96a899248d8d8025d1fa7ef792
 ## GPU acceleration
 
 If you have a CUDA‑capable GPU and [PyTorch](https://pytorch.org/) installed, try the
