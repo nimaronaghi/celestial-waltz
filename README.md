@@ -52,9 +52,9 @@ step measured with the included `benchmark.py` script.
 Two bodies of mass $m_i$ and $m_j$ separated by a vector $\mathbf{r}_{ij}$ interact via
 the gravitational force
 
-$$
+\[
 \mathbf{F}_{ij} = G\,\frac{m_i m_j}{\lVert\mathbf{r}_{ij}\rVert^3}\,\mathbf{r}_{ij},
-$$
+\]
 
 where $G$ is the gravitational constant.  A small softening parameter $\varepsilon$
 is added to the denominator to avoid singularities when particles approach
