@@ -1,4 +1,5 @@
 import math
+import os
 import numpy as np
 from PIL import Image
 from nbody import BarnesHutSimulation
@@ -54,7 +55,9 @@ for step in range(steps):
     frames.append(Image.fromarray(img))
     print(f"Recorded frame {len(frames)}/{steps}", end='\r')
 
-# save GIF
-output_path = "galaxy_collision_big.gif"
+# save GIF inside images/
+images_dir = os.path.join(os.path.dirname(__file__), "images")
+os.makedirs(images_dir, exist_ok=True)
+output_path = os.path.join(images_dir, "galaxy_collision_big.gif")
 frames[0].save(output_path, save_all=True, append_images=frames[1:], duration=40, loop=0, optimize=True)
 print(f"\nGIF saved to {output_path}, frames: {len(frames)}")

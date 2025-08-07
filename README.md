@@ -21,10 +21,10 @@ highlight what you can do without overwhelming you with prose.
 | **Utilities**      | Benchmark script, image/gif generation, simple test suite |
 
 These additions address several of the originally planned improvements such as
-support for additional galaxy initialisers and higher‑order integrators【21345888516305†L146-L153】.  The
+support for additional galaxy initialisers and higher‑order integrators.  The
 new initial condition generators draw inspiration from open‑source N‑body
 projects that employ Monte‑Carlo samplings of the Plummer, Hernquist and
-Kuzmin distributions to model realistic spherical and disk galaxies【463864940567552†L238-L243】.
+Kuzmin distributions to model realistic spherical and disk galaxies.
 
 ## Gallery
 
@@ -65,7 +65,7 @@ contributions from all others.
 
 Direct summation of forces scales as O(N²), which becomes expensive for large
 particle counts.  The Barnes–Hut algorithm replaces distant groups of bodies by
-a single pseudo‑particle located at the group’s centre of mass【463864940567552†L262-L270】.  A node of size $s$
+a single pseudo‑particle located at the group’s centre of mass.  A node of size $s$
 at distance $d$ from a particle is approximated by its centre of mass when
 $s/d<\theta$.  This hierarchical tree reduces the number of force
 calculations to O(N log N) while retaining good accuracy.
@@ -94,7 +94,7 @@ to build more realistic systems:
   distance and travelling towards each other to study collisions and mergers.
 
 These generators draw inspiration from other open projects that employ
-Monte‑Carlo sampling to create realistic spherical and disk galaxies【463864940567552†L238-L243】.
+Monte‑Carlo sampling to create realistic spherical and disk galaxies.
 
 ## Installation
 
@@ -168,16 +168,15 @@ to regenerate the gallery images.  The script evolves each initial condition
 for a few hundred steps (except the Plummer sphere, which is shown at t=0) and
 saves the scatter plots in the `images/` directory.
 
-<<<<<<< HEAD
 ### Animations
 
 An additional script, `generate_collision_gif.py`, demonstrates how to create
 a smooth, three‑dimensional animation of a galaxy collision.  It launches
 two spiral galaxies on a collision course, rotates the camera slowly around
-the system and maps the depth coordinate to colour.  The result is saved as
-`galaxy_collision_big.gif` and is only about 90 KB despite containing 300
-frames.  You can adjust particle numbers, time step and rotation speed by
-editing the script.  Run it from inside the project directory.  After generating the GIF, copy or move `galaxy_collision_big.gif` into the `images/` directory.  This allows the GIF to be referenced from the README:
+the system and maps the depth coordinate to colour.  The script saves the
+result to `images/galaxy_collision_big.gif` and is only about 90 KB despite
+containing 300 frames.  You can adjust particle numbers, time step and rotation
+speed by editing the script.  Run it from inside the project directory:
 
 ```bash
 python3 generate_collision_gif.py
@@ -187,14 +186,10 @@ The script uses only `Pillow` and the built‑in simulation; no external
 renderers are required.  Feel free to adapt the camera trajectory or colour
 map to create your own presentations.
 
-Once you have moved the GIF into `images/`, you can view it below:
-
 | Demo animation |
 |---------------|
 | ![Galaxy collision animation](images/galaxy_collision_big.gif) |
 
-=======
->>>>>>> 1601b4c41addef96a899248d8d8025d1fa7ef792
 ## GPU acceleration
 
 If you have a CUDA‑capable GPU and [PyTorch](https://pytorch.org/) installed, try the
