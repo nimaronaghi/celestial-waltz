@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "package_version": "0.2.0",
+  "solver_source_sha256": "f1d81f45825781f7041e11e4fcb4daad6fdaa460957483372b601c37059f8a13",
+  "created_at_utc": "2026-10-07T06:49:59.598474+00:00",
+  "particle_counts": [
+    32,
+    64,
+    128,
+    256
+  ],
+  "repeats": 5,
+  "seed": 42,
+  "theta": 0.5,
+  "eps": 0.05,
+  "G": 1.0,
+  "total_mass": 1.0,
+  "fixture": "uniform cube [-1, 1]^3; zero velocity; equal particle masses",
+  "fixture_hash_encoding": "SHA256 of compact JSON [x,y,z,vx,vy,vz,mass] rows",
+  "fixtures": [
+    {
+      "n_particles": 32,
+      "sha256": "8bdab1976cd468c6010f359b4c1d5a30dbbc338a496b8242689940f056589d9e"
+    },
+    {
+      "n_particles": 64,
+      "sha256": "ded2b9433e7e6a254e39c477c314b1fd4167b467365e30b4d2e8a5465ea5807f"
+    },
+    {
+      "n_particles": 128,
+      "sha256": "d2db92a605e3995e017f39c8d01b49af7a2106a8eefee0119cfbd025bfa2fb85"
+    },
+    {
+      "n_particles": 256,
+      "sha256": "8248a5faccc31766389bb2b5083f0967d59608571427f9044d58cb070c0b19cb"
+    }
+  ],
+  "timing_scope": "CPU acceleration evaluation; includes Barnes-Hut tree construction; excludes initialization, integration, error calculation, plotting and I/O",
+  "clock": "time.perf_counter",
+  "clock_resolution_seconds": 1e-07,
+  "warmup_evaluations_per_solver": 1,
+  "solver_order": "direct,bh on odd repeats; bh,direct on even repeats",
+  "force_error": "RMS norm of acceleration difference / RMS norm of direct acceleration",
+  "zero_reference_policy": "0 if both fields are zero; null/empty CSV if only reference is zero",
+  "environment": {
+    "python_version": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+    "python_implementation": "CPython",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "logical_cpu_count": 24
+  },
+  "summary": [
+    {
+      "n_particles": 32,
+      "mode": "direct",
+      "mean_seconds": 0.00032160000409930944,
+      "median_seconds": 0.0003233000170439482,
+      "stdev_seconds": 4.89592511509224e-06,
+      "min_seconds": 0.0003154999576508999,
+      "max_seconds": 0.00032729998929426074,
+      "relative_rms_force_error": 0.0
+    },
+    {
+      "n_particles": 32,
+      "mode": "bh",
+      "mean_seconds": 0.002352080016862601,
+      "median_seconds": 0.0023332000127993524,
+      "stdev_seconds": 4.511092912020735e-05,
+      "min_seconds": 0.0023202000302262604,
+      "max_seconds": 0.002430699998512864,
+      "relative_rms_force_error": 0.007732110090019306
+    },
+    {
+      "n_particles": 64,
+      "mode": "direct",
+      "mean_seconds": 0.0012248400133103132,
+      "median_seconds": 0.0011831999872811139,
+      "stdev_seconds": 8.568621628686619e-05,
+      "min_seconds": 0.001179700018838048,
+      "max_seconds": 0.0013773000100627542,
+      "relative_rms_force_error": 0.0
+    },
+    {
+      "n_particles": 64,
+      "mode": "bh",
+      "mean_seconds": 0.0071991799864918,
+      "median_seconds": 0.007009599998127669,
+      "stdev_seconds": 0.0004752972792942604,
+      "min_seconds": 0.006903500005137175,
+      "max_seconds": 0.008044699963647872,
+      "relative_rms_force_error": 0.005487015681264119
+    },
+    {
+      "n_particles": 128,
+      "mode": "direct",
+      "mean_seconds": 0.004686659993603825,
+      "median_seconds": 0.004651500028558075,
+      "stdev_seconds": 0.0001255539942324945,
+      "min_seconds": 0.004569399985484779,
+      "max_seconds": 0.004829100042115897,
+      "relative_rms_force_error": 0.0
+    },
+    {
+      "n_particles": 128,
+      "mode": "bh",
+      "mean_seconds": 0.020649440004490316,
+      "median_seconds": 0.020574200025293976,
+      "stdev_seconds": 0.0002762004956940131,
+      "min_seconds": 0.020424999995157123,
+      "max_seconds": 0.021129700005985796,
+      "relative_rms_force_error": 0.009292138807248407
+    },
+    {
+      "n_particles": 256,
+      "mode": "direct",
+      "mean_seconds": 0.01846474000485614,
+      "median_seconds": 0.018591500003822148,
+      "stdev_seconds": 0.00046903122297700455,
+      "min_seconds": 0.01776139996945858,
+      "max_seconds": 0.01886690000537783,
+      "relative_rms_force_error": 0.0
+    },
+    {
+      "n_particles": 256,
+      "mode": "bh",
+      "mean_seconds": 0.05843176000053063,
+      "median_seconds": 0.05796649999683723,
+      "stdev_seconds": 0.0011502416700075798,
+      "min_seconds": 0.05750549997901544,
+      "max_seconds": 0.06042330001946539,
+      "relative_rms_force_error": 0.007732937412527173
+    }
+  ],
+  "samples_file": "raw_timings.csv"
+}

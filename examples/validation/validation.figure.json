@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "package_version": "0.2.0",
+  "python_version": "3.12.14",
+  "matplotlib_version": "3.11.2",
+  "style": "celestial-waltz research house style",
+  "font": "STIXGeneral",
+  "math_font": "STIX",
+  "base_font_pt": 8,
+  "axes_label_font_pt": 9,
+  "width_mm": 183.0,
+  "height_mm": 132.0,
+  "png_dpi": 600,
+  "formats": [
+    "pdf",
+    "svg",
+    "png"
+  ],
+  "caption": "Circular-binary verification of the direct Newtonian solver. Two equal masses have total mass M=1, initial separation d0=1, G=1, and softening epsilon=0, in code units. (a) The first particle's orbit at 256 steps per period, compared with the analytic circular solution. (b) Position residual norm, normalized by d0, across 3 periods at the same resolution. (c) Final position residual after 3 periods versus normalized timestep h=Delta t/P. Reference slopes h^2 and h^4 are normalized to 0.4 times the finest measured error for the corresponding method; they are guides, not fits. (d) Absolute relative energy error at 256 steps per period. Exact zeros are omitted from logarithmic axes; positive values are not clipped. These are deterministic numerical errors, not statistical confidence intervals. This experiment verifies a smooth two-body problem and does not establish accuracy for arbitrary many-body systems or galaxy initial conditions.",
+  "sources": [
+    {
+      "file": "report.json",
+      "sha256": "be548fd8a63c474e2d038e01e80934cf420c018b18f022b5d17db27c26c3b55e"
+    },
+    {
+      "file": "convergence.csv",
+      "sha256": "3d936d003c8c466c6dadc7d994dd1cc3fc03f3977c74cfe5612391147affff19"
+    },
+    {
+      "file": "leapfrog_trajectory.csv",
+      "sha256": "20f843740f900f7060c977bd0c99d64c3c356b2e2eb5dff2b6fa902e567b1f51"
+    },
+    {
+      "file": "rk4_trajectory.csv",
+      "sha256": "8a0d485a09ae9c43d213e50e05bc3e562379427f454719106ea499583c6673e2"
+    }
+  ],
+  "style_source_sha256": "5b071019823e03a7ccfe2dde242a84fac19c71794c4beb8107c6282dea612d12",
+  "figure_metadata": {
+    "title": "Circular-binary numerical verification",
+    "renderer_source_sha256": "9943749f2c2833728c6dd05248c9f84d83f34066776fbb835a3075726e55522d",
+    "normalized_time": "t/P",
+    "normalized_length": "r/d0",
+    "log_zero_policy": "Nonpositive/undefined values omitted; no positive-value floor",
+    "convergence_reference_orders": [
+      2,
+      4
+    ],
+    "reference_guides_are_fits": false,
+    "problem": {
+      "G": 1.0,
+      "total_mass": 1.0,
+      "separation": 1.0,
+      "softening": 0.0,
+      "period": 6.283185307179586,
+      "orbits": 3,
+      "solver": "direct",
+      "steps_per_orbit": [
+        64,
+        128,
+        256
+      ]
+    }
+  }
+}

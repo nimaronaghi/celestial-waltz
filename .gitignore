@@ -1,3 +1,10 @@
 simulation.bin
 simulation.gif
 __pycache__/
+.venv/
+*.egg-info/
+build/
+dist/
+results/
+benchmark_results/
+.pytest_cache/

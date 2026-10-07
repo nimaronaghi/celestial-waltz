@@ -1,0 +1,6 @@
+# Stable source bytes make SHA256 provenance portable across Windows and Linux.
+*.py text eol=lf
+# Experiment tables and manifests must retain the exact bytes that were hashed.
+examples/** -text whitespace=cr-at-eol
+# Matplotlib vector exports are generated artifacts, with path-format whitespace.
+examples/**/*.svg -diff
