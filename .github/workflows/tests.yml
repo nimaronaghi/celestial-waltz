@@ -1,0 +1,49 @@
+name: Tests
+on: [push, pull_request]
+permissions:
+  contents: read
+
+jobs:
+  core:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ['3.10', '3.12']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install .
+      - run: python -m unittest discover -s tests -v
+      - run: celestial-waltz validate --output results/two-body
+      - run: celestial-waltz benchmark --counts 16 32 --repeats 2 --output results/benchmark
+      - uses: actions/upload-artifact@v4
+        with:
+          name: validation-${{ matrix.os }}-${{ matrix.python }}
+          path: results/
+  figures:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install '.[plot]'
+      - run: python -m unittest discover -s tests -p test_plotting.py -v
+      - run: celestial-waltz figures --validation examples/validation --benchmark examples/force-benchmark --output results/figures
+      - uses: actions/upload-artifact@v4
+        with:
+          name: scientific-figures
+          path: results/figures/
+  torch-cpu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install .
+      - run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - run: python -m unittest discover -s tests -p test_gpu.py -v

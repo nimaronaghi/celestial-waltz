@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "celestial-waltz"
+version = "0.2.0"
+description = "Reproducible Newtonian N-body experiments with accuracy diagnostics"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+dependencies = []
+
+[project.optional-dependencies]
+plot = ["matplotlib>=3.7"]
+recording = ["Pillow>=10", "numpy>=1.24"]
+gpu = ["torch>=2.2"]
+
+[project.scripts]
+celestial-waltz = "celestial_waltz.cli:main"
+
+[project.urls]
+Repository = "https://github.com/nimaronaghi/celestial-waltz"
+
+[tool.setuptools]
+packages = ["celestial_waltz"]
+py-modules = ["nbody", "recorder", "benchmark", "gpu_sim"]

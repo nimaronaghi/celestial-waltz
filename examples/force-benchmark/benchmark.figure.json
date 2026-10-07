@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "package_version": "0.2.0",
+  "python_version": "3.12.14",
+  "matplotlib_version": "3.11.2",
+  "style": "celestial-waltz research house style",
+  "font": "STIXGeneral",
+  "math_font": "STIX",
+  "base_font_pt": 8,
+  "axes_label_font_pt": 9,
+  "width_mm": 183.0,
+  "height_mm": 85.0,
+  "png_dpi": 600,
+  "formats": [
+    "pdf",
+    "svg",
+    "png"
+  ],
+  "caption": "Direct summation and Barnes-Hut force evaluation on identical seeded, fixed-total-mass particle fixtures. (a) Median elapsed wall-clock time with error bars spanning the 25th to 75th percentiles (linear-interpolated sample quantiles). Timing spread describes execution variability, not physical uncertainty. (b) Median normalized RMS acceleration error relative to direct summation, expressed as a percentage: 100 times the RMS norm of the acceleration difference divided by the RMS norm of the direct acceleration. The direct reference is zero on the linear accuracy axis. Particle counts: 32, 64, 128, 256; seed=42; theta=0.5; softening eps=0.05; G=1.0; total mass=1.0; 5 repeats per solver and count; 1 untimed warmup per solver. Fixture: uniform cube [-1, 1]^3; zero velocity; equal particle masses. Scope: CPU acceleration evaluation; includes Barnes-Hut tree construction; excludes initialization, integration, error calculation, plotting and I/O. Connecting lines are visual guides, not fitted scaling laws.",
+  "sources": [
+    {
+      "file": "raw_timings.csv",
+      "sha256": "f43946f257daed7b93dd0d5c2af8685f00dd13ca9e5f65a8bd57ef7fcf8a8891"
+    },
+    {
+      "file": "metadata.json",
+      "sha256": "4242f6c823b0f186bf11bb4ca2c85592b726e963ec123dbee6efff7bce42c8df"
+    }
+  ],
+  "style_source_sha256": "5b071019823e03a7ccfe2dde242a84fac19c71794c4beb8107c6282dea612d12",
+  "figure_metadata": {
+    "figure_type": "benchmark_runtime_and_accuracy",
+    "renderer_source_sha256": "81508a3eee0f20a4e8b77dde8534a5ecaab784d6d4bfff69cd7fca09381550c5",
+    "runtime_statistic": "median with 25th--75th percentile interval",
+    "quantile_method": "linear interpolation",
+    "time_unit": "ms",
+    "accuracy_statistic": "median normalized RMS force error",
+    "accuracy_unit": "percent",
+    "show_replicates": false,
+    "experiment": {
+      "particle_counts": [
+        32,
+        64,
+        128,
+        256
+      ],
+      "repeats": 5,
+      "seed": 42,
+      "theta": 0.5,
+      "eps": 0.05,
+      "G": 1.0,
+      "total_mass": 1.0,
+      "fixture": "uniform cube [-1, 1]^3; zero velocity; equal particle masses",
+      "timing_scope": "CPU acceleration evaluation; includes Barnes-Hut tree construction; excludes initialization, integration, error calculation, plotting and I/O",
+      "warmup_evaluations_per_solver": 1
+    },
+    "benchmark_environment": {
+      "python_version": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+      "python_implementation": "CPython",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "machine": "AMD64",
+      "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+      "logical_cpu_count": 24
+    },
+    "benchmark_created_at_utc": "2026-10-07T06:49:59.598474+00:00",
+    "solver_source_sha256": "f1d81f45825781f7041e11e4fcb4daad6fdaa460957483372b601c37059f8a13",
+    "plotted_values": [
+      {
+        "n_particles": 32,
+        "mode": "direct",
+        "q25_milliseconds": 0.3176000318489969,
+        "median_milliseconds": 0.3233000170439482,
+        "q75_milliseconds": 0.32430002465844154,
+        "median_error_percent": 0.0
+      },
+      {
+        "n_particles": 64,
+        "mode": "direct",
+        "q25_milliseconds": 1.182100037112832,
+        "median_milliseconds": 1.1831999872811139,
+        "q75_milliseconds": 1.201900013256818,
+        "median_error_percent": 0.0
+      },
+      {
+        "n_particles": 128,
+        "mode": "direct",
+        "q25_milliseconds": 4.573899961542338,
+        "median_milliseconds": 4.651500028558075,
+        "q75_milliseconds": 4.8093999503180385,
+        "median_error_percent": 0.0
+      },
+      {
+        "n_particles": 256,
+        "mode": "direct",
+        "q25_milliseconds": 18.241900019347668,
+        "median_milliseconds": 18.591500003822148,
+        "q75_milliseconds": 18.862000026274472,
+        "median_error_percent": 0.0
+      },
+      {
+        "n_particles": 32,
+        "mode": "bh",
+        "q25_milliseconds": 2.3282000329345465,
+        "median_milliseconds": 2.3332000127993524,
+        "q75_milliseconds": 2.348100009839982,
+        "median_error_percent": 0.7732110090019306
+      },
+      {
+        "n_particles": 64,
+        "mode": "bh",
+        "q25_milliseconds": 7.0038000121712685,
+        "median_milliseconds": 7.009599998127669,
+        "q75_milliseconds": 7.034299953375012,
+        "median_error_percent": 0.5487015681264119
+      },
+      {
+        "n_particles": 128,
+        "mode": "bh",
+        "q25_milliseconds": 20.52630000980571,
+        "median_milliseconds": 20.574200025293976,
+        "q75_milliseconds": 20.591999986208975,
+        "median_error_percent": 0.9292138807248407
+      },
+      {
+        "n_particles": 256,
+        "mode": "bh",
+        "q25_milliseconds": 57.94259998947382,
+        "median_milliseconds": 57.96649999683723,
+        "q75_milliseconds": 58.32090001786128,
+        "median_error_percent": 0.7732937412527172
+      }
+    ]
+  }
+}

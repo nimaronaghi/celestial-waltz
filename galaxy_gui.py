@@ -6,6 +6,9 @@ from nbody import BarnesHutSimulation
 
 
 class GalaxyApp:
+    CAMERA_DISTANCE = 3.0
+    NEAR_PLANE = 0.01
+
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("N-Body Galaxy Simulation")
@@ -25,14 +28,14 @@ class GalaxyApp:
         self.initial_var = tk.StringVar(value="spiral")
         self.mode_var = tk.StringVar(value="bh")
 
-        tk.Label(controls, text="Particles").pack(side=tk.LEFT)
+        tk.Label(controls, text="Particles / galaxy").pack(side=tk.LEFT)
         tk.Scale(controls, from_=50, to=500, orient=tk.HORIZONTAL, variable=self.n_var).pack(side=tk.LEFT)
-        tk.Label(controls, text="Time step").pack(side=tk.LEFT)
-        tk.Scale(controls, from_=1, to=100, orient=tk.HORIZONTAL, variable=self.dt_var).pack(side=tk.LEFT)
+        tk.Label(controls, text="Time step (code units)").pack(side=tk.LEFT)
+        tk.Scale(controls, from_=0.001, to=0.1, resolution=0.001, orient=tk.HORIZONTAL, variable=self.dt_var).pack(side=tk.LEFT)
         tk.Label(controls, text="Iterations").pack(side=tk.LEFT)
         tk.Scale(controls, from_=50, to=1000, orient=tk.HORIZONTAL, variable=self.iter_var).pack(side=tk.LEFT)
-        tk.Label(controls, text="Softening").pack(side=tk.LEFT)
-        tk.Scale(controls, from_=1, to=100, orient=tk.HORIZONTAL, variable=self.eps_var).pack(side=tk.LEFT)
+        tk.Label(controls, text="Softening (code units)").pack(side=tk.LEFT)
+        tk.Scale(controls, from_=0, to=0.5, resolution=0.005, orient=tk.HORIZONTAL, variable=self.eps_var).pack(side=tk.LEFT)
 
         # dropdown for integrator selection
         tk.Label(controls, text="Integrator").pack(side=tk.LEFT)
@@ -58,9 +61,9 @@ class GalaxyApp:
 
     def start(self):
         n = self.n_var.get()
-        dt = self.dt_var.get() / 100.0
+        dt = self.dt_var.get()
         iterations = self.iter_var.get()
-        eps = self.eps_var.get() / 100.0
+        eps = self.eps_var.get()
         # create simulation with selected options
         self.sim = BarnesHutSimulation(
             num_particles=n,
@@ -75,17 +78,25 @@ class GalaxyApp:
         self.update_simulation()
 
     def project(self, x, y, z):
-        distance = 3.0
+        """Project into the viewport, or return None for an invisible point.
+
+        The camera is at z=-CAMERA_DISTANCE and looks along positive z.
+        NEAR_PLANE is a rendering distance in code units, not a force cutoff.
+        Offscreen particles are culled rather than moved onto the image border.
+        """
+        if not all(math.isfinite(value) for value in (x, y, z)):
+            return None
+        depth = z + self.CAMERA_DISTANCE
+        if depth <= self.NEAR_PLANE:
+            return None
         scale = self.canvas_size / 4
-        factor = scale / (z + distance)
+        factor = scale / depth
         cx = self.canvas_size / 2
         cy = self.canvas_size / 2
         px = cx + x * factor
         py = cy - y * factor
-        # Clamp coordinates so that the 2x2 particle remains fully visible
-        # within the canvas boundaries
-        px = max(2, min(self.canvas_size - 2, px))
-        py = max(2, min(self.canvas_size - 2, py))
+        if not (0 <= px <= self.canvas_size and 0 <= py <= self.canvas_size):
+            return None
         return px, py
 
     def draw(self):
@@ -101,7 +112,10 @@ class GalaxyApp:
                     max_speed = speed
 
         for p in self.sim.particles:
-            px, py = self.project(p.x, p.y, p.z)
+            projected = self.project(p.x, p.y, p.z)
+            if projected is None:
+                continue
+            px, py = projected
             color = "white"
             if colorize and max_speed > 0:
                 speed = math.sqrt(p.vx * p.vx + p.vy * p.vy + p.vz * p.vz)
